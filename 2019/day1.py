@@ -1,7 +1,7 @@
 import utils
 import math
 
-RAW = utils.get_input(1)
+RAW = utils.day(1)
 DATA = list(utils.extract_ints(RAW))
 
 def calc_fuel(mass: int):

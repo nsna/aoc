@@ -2,7 +2,7 @@ import requests
 import yaml
 from pathlib import Path
 
-YEAR = 2019
+YEAR = 2022
 HERE = Path(__file__).parent
 TOKEN_FILE = HERE / ".token" 
 INPUTS_FILE = HERE / "inputs.yaml"
