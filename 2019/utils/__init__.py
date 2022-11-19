@@ -44,3 +44,11 @@ def extract_ints(raw: str) -> map:
     import re
 
     return map(int, re.findall(r'(-?\d+)', raw))
+    
+def directions(raw: str) -> list:
+    """
+    Extract 2D directions from input
+    """
+    import re
+    
+    return re.findall('(\w)')
