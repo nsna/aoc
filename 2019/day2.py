@@ -1,7 +1,7 @@
 import utils
 
 RAW = utils.day(2)
-DATA = list(utils.extract_ints(RAW))
+DATA = list(utils.ints(RAW))
 
 ops = {
     1: lambda x, y: x + y,

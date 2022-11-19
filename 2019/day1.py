@@ -2,7 +2,7 @@ import utils
 import math
 
 RAW = utils.day(1)
-DATA = list(utils.extract_ints(RAW))
+DATA = list(utils.ints(RAW))
 
 def calc_fuel(mass: int):
     return max(math.floor(mass / 3) - 2, 0)
