@@ -37,10 +37,20 @@ def day(day: str | int) -> str:
     INPUTS_FILE.write_text(yaml.dump(inputs, default_style="|"))
     return inputs[day]
     
-def extract_ints(raw: str) -> map:
+def ints(raw: str) -> map:
     """
     Extract integers from a string.
     """
     import re
 
     return map(int, re.findall(r'(-?\d+)', raw))
+    
+def directions(raw: str) -> list:
+    """
+    Extract 2D directions from input, i.e. U201
+    """
+    import re
+    
+    pattern = re.compile('((\w)(\d+))')
+    values = map(pattern.findall, raw)
+    return [(value[1], int(value[2])) for value in values]

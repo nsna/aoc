@@ -15,7 +15,7 @@ for i, (prev, next) in enumerate(pairwise(start)):
 non_decreasing.append(start)
 digits = start[:]
 
-# find remaining non-decreasing numbers (really sloppy 😬)
+# find remaining non-decreasing numbers
 while digits < end:
     # 1. increment last digit
     digit = str(int(digits[-1]) + 1)
