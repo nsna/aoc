@@ -93,3 +93,29 @@ def nth(iterable, n):
     from itertools import islice
 
     return next(islice(iterable, n, None))
+    
+def delta4(coord) -> tuple: 
+    """
+    Four neighbouring cells (without diagonals).
+    """
+    x, y = coord
+    return ((x+1, y), (x-1, y), (x, y+1), (x, y-1))
+
+def delta8(coord) -> tuple: 
+    """
+    Eight neighbouring cells (with diagonals).
+    """
+    x, y = coord 
+    return ((x+1, y), (x-1, y), (x, y+1), (x, y-1),
+            (x+1, y+1), (x-1, y-1), (x+1, y-1), (x-1, y+1))
+            
+# Shorthand functions to get X and Y coordinates out of
+# a tuple or list 
+def X(coord): return coord[0]
+def Y(coord): return coord[1]
+
+def manhattan_distance(a, b=(0,0)) -> int:
+    """
+    Manhattan distance between point a and b (default origin)
+    """
+    return abs(X(a) - X(b)) + abs(Y(a) - Y(b))
