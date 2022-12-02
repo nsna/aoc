@@ -1,6 +1,9 @@
-from utils import day, ints
+from utils import day, rshift
 
 RAW = day(2)
+
+a = ['A', 'B', 'C']
+b = ['X', 'Y', 'Z']
 
 shapes = {
     'A': 1,
@@ -11,20 +14,17 @@ shapes = {
     'Z': 3
 }
 
-win = {
-    'X': 'C',
-    'Y': 'A',
-    'Z': 'B'
-}
+win = dict(zip(b, rshift(a, 1)))
 
-def round(opponent, player):
-    score = shapes[player]
+def round(a, b):
+    score = shapes[b]
     # draw
-    if shapes[opponent] == shapes[player]:
+    if shapes[a] == shapes[b]:
         return score + 3
     # win
-    if beats[player] == opponent:
+    if win[b] == a:
         return score + 6
+    # lose
     else:
         return score
 
@@ -39,21 +39,10 @@ print(score)
 # X = lose
 # Y = draw
 # Z = win
-draw = {
-    'A': 'X',
-    'B': 'Y',
-    'C': 'Z'
-}
-lose = {
-    'A': 'Z',
-    'B': 'X',
-    'C': 'Y'
-}
-win = {
-    'A': 'Y',
-    'B': 'Z',
-    'C': 'X'
-}
+draw = dict(zip(a, rshift(b, 0)))
+lose = dict(zip(a, rshift(b, 1)))
+win  = dict(zip(a, rshift(a, 2)))
+
 score = 0
 for move in moves:
     opponent, outcome = move

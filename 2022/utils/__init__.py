@@ -68,10 +68,28 @@ def directions(raw: str) -> list:
     values = map(pattern.findall, raw)
     return [(value[1], int(value[2])) for value in values]
     
-def shift(iterable, n):
+def rshift(iterable, n):
     """
-    Shifts the indexes of an iterable forward by n
+    Shift all values in iterable to the right by n places
     """
     from itertools import islice, cycle
+
+    l = len(iterable)
+    return islice(cycle(iterable), l - (n % l), 2 * l - (n % l))
+
+def lshift(iterable, n):
+    """
+    Shift all values in iterable to the left by n places
+    """
+    from itertools import islice, cycle
+
+    l = len(iterable)
+    return islice(cycle(iterable), n, n + l)
     
-    return islice(cycle(iterable), -n, -n + len(iterable))
+def nth(iterable, n):
+    """
+    Return nth item of iterable
+    """
+    from itertools import islice
+
+    return next(islice(iterable, n, None))
