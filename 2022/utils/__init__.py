@@ -67,3 +67,11 @@ def directions(raw: str) -> list:
     pattern = re.compile('((\w)(\d+))')
     values = map(pattern.findall, raw)
     return [(value[1], int(value[2])) for value in values]
+    
+def shift(iterable, n):
+    """
+    Shifts the indexes of an iterable forward by n
+    """
+    from itertools import islice, cycle
+    
+    return islice(cycle(iterable), -n, -n + len(iterable))
