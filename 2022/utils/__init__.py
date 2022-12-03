@@ -1,6 +1,7 @@
 import requests
 import yaml
 import os
+import time
 from pathlib import Path
 
 YEAR = 2022
@@ -8,12 +9,30 @@ HERE = Path(__file__).parent
 TOKEN_FILE = HERE / ".token" 
 INPUTS_FILE = HERE / "inputs.yaml"
 
+class Benchmark:
+    def __init__(self):
+        self.start = time.time()
+        self.end = self.start
+    
+    def update(self):
+        self.end = time.time()
+        
+    def __str__(self):
+        return f"{(self.end - self.start) * 1000:.2f}ms"
+            
 def _read_token() -> dict | None:
+    """
+    Read local token file used for retrieving inputs in day function
+    """
     if not TOKEN_FILE.is_file():
         return None
     return {"session": TOKEN_FILE.read_text().strip()}
 
 def day(day: str | int) -> str:
+    """
+    Retrieve an input for advent of code day
+    Year is a constant
+    """
     token = _read_token()
     if token is None:
         raise ValueError("token not found")
