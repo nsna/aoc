@@ -1,6 +1,5 @@
 from utils import day
 from more_itertools import chunked, divide
-from functools import reduce
 from string import ascii_letters
 
 RAW = day(3)
@@ -10,12 +9,12 @@ sacks = RAW.splitlines()
 
 # part1 
 print(sum(
-    values[reduce(set.intersection, map(set, divide(2, sack))).pop()]
+    values[set.intersection(*map(set, divide(2, sack))).pop()]
     for sack in sacks
 ))
 
 # part2
 print(sum(
-    values[reduce(set.intersection, map(set, group)).pop()]
+    values[set.intersection(*map(set, group)).pop()]
     for group in chunked(sacks, 3)
 ))
