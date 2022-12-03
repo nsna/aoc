@@ -1,5 +1,6 @@
 from utils import day
 from more_itertools import chunked
+from functools import reduce
 from string import ascii_letters
 
 RAW = day(3)
@@ -19,7 +20,7 @@ print(total)
 # part2
 total = 0
 for group in chunked(sacks, 3):
-    badge = set(group[0]) & set(group[1]) & set(group[2])
+    badge = reduce(set.intersection, map(set, group))
     total += values[badge.pop()]
 
 print(total)
