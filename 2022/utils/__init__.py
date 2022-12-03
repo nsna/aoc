@@ -67,7 +67,7 @@ def directions(raw: str) -> list:
     pattern = re.compile('((\w)(\d+))')
     values = map(pattern.findall, raw)
     return [(value[1], int(value[2])) for value in values]
-    
+  
 def rshift(iterable, n):
     """
     Shift all values in iterable to the right by n places
