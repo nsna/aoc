@@ -39,7 +39,7 @@ def day(day: str | int) -> str:
         
     url = f"https://adventofcode.com/{YEAR}/day/{day}/input"
     
-    #https://www.reddit.com/r/adventofcode/comments/z9dhtd/please_include_your_contact_info_in_the_useragent/
+    # https://www.reddit.com/r/adventofcode/comments/z9dhtd/please_include_your_contact_info_in_the_useragent/
     discord = os.getenv('DISCORD')
     if discord is None:
         raise ValueError("set discord environment variable for request contact info")
@@ -48,26 +48,22 @@ def day(day: str | int) -> str:
         'User-Agent': f"https://github.com/nsna/aoc | discord:{discord}"
     }
     
-    # create an input file if none is found
-    if not INPUTS_FILE.is_file():
-        INPUTS_FILE.write_text(f"info: Advent of Code {YEAR} inputs")
-            
-    # check if input has already been loaded
-    inputs = yaml.full_load(INPUTS_FILE.read_text())
+    # check for cached input
+    INPUTS_FILE = HERE / "inputs" / f"{day}.txt"
     
-    if day in inputs:
-        return inputs[day]
-    
+    if INPUTS_FILE.is_file():
+        return INPUTS_FILE.read_text()
+   
     # request input
     res = requests.get(url, cookies=token, headers=headers)
     
     if not res.ok:
         raise ValueError("request failed")
         
-    # cache input
-    inputs[day] = res.text.strip()
-    INPUTS_FILE.write_text(yaml.dump(inputs, default_style="|"))
-    return inputs[day]
+    # cache input + remove any trailing newlines
+    RAW = res.text.rstrip()
+    INPUTS_FILE.write_text(RAW)
+    return RAW
     
 def ints(raw: str) -> map:
     """

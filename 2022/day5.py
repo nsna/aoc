@@ -9,10 +9,6 @@ bins = defaultdict(deque)
 layout, moves = [section.splitlines() for section in RAW.split('\n\n')]
 locations = [match.start() for match in re.finditer('\d', layout[-1])]
 
-# my input function broke, yaml clipped the leading whitespace...
-# need to fix this later
-layout[0] = "    " + layout[0]
-
 # sort crates into bins
 for loc in locations:
     for row in layout[-2::-1]:
