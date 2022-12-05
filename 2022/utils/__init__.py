@@ -1,5 +1,4 @@
 import requests
-import yaml
 import os
 import time
 from pathlib import Path
@@ -7,7 +6,6 @@ from pathlib import Path
 YEAR = 2022
 HERE = Path(__file__).parent
 TOKEN_FILE = HERE / ".token" 
-INPUTS_FILE = HERE / "inputs.yaml"
 
 class Benchmark:
     def __init__(self):
