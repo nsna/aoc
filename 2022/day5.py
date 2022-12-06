@@ -5,35 +5,30 @@ from copy import deepcopy
 
 RAW = day(5)
 
-bins = defaultdict(deque)
+part1 = defaultdict(deque)
 layout, moves = [section.splitlines() for section in RAW.split('\n\n')]
 locations = [match.start() for match in re.finditer('\d', layout[-1])]
 
-# sort crates into bins
+# sort crates into dict<deque>
 for loc in locations:
     for row in layout[-2::-1]:
         crate = row[loc]
         if crate == ' ':
             break
-        bins[int(layout[-1][loc])].append(crate)
+        part1[int(layout[-1][loc])].append(crate)
 
 # need a fresh copy of the input for part 2 since we are modifying it
-part2 = deepcopy(bins)
+part2 = deepcopy(part1)
 
-# part 1
+# part 1 & part 2
 for move in moves:
     n, a, b = ints(move)
+    part2_temp = deque([])
     for _ in range(n):
-        bins[b].append(bins[a].pop())
-
-# part 2
-for move in moves:
-    n, a, b = ints(move)
-    temp = deque([])
-    for _ in range(n):
-        temp.append(part2[a].pop())
-    temp.reverse()
-    part2[b].extend(temp)
-        
-print(''.join([bins[val][-1] for val in bins]))
+        part1[b].append(part1[a].pop())
+        part2_temp.append(part2[a].pop())
+    part2_temp.reverse()
+    part2[b].extend(part2_temp)
+    
+print(''.join([part1[val][-1] for val in part1]))
 print(''.join([part2[val][-1] for val in part2]))
