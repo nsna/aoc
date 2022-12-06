@@ -75,7 +75,15 @@ def pos_ints(raw: str) -> map:
     import re
     
     return map(int, re.findall(r'(\d+)', raw))
+
+def frequency(iterable) -> dict:
+    from collections import defaultdict
     
+    freq = defaultdict(int)
+    for item in iterable:
+        freq[item] += 1
+    return freq
+            
 def directions(raw: str) -> list:
     """
     Extract 2D directions from input, i.e. U201
