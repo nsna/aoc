@@ -11,11 +11,10 @@ root = []
 
 for cmd in commands:
     match cmd.split():
+        case ['$', 'cd', '..']:
+            root.pop()
         case ['$', 'cd', p]:
-            if p == '..':
-                root.pop()
-            else:
-                root.append(p)
+            root.append(p)
         case ['$', 'ls']:
             pass
         case ['dir', p]:
@@ -29,8 +28,8 @@ for cmd in commands:
                 path.pop()
 
 # part1
-print(sum([d for d in dir.values() if d <= 100000]))
+print(sum([d for d in dir.values() if d <= 100_000]))
 
 # part2
-free = 70000000 - dir[('/',)]
-print(min([d for d in dir.values() if d + free >= 30000000]))
+free = 70_000_000 - dir[('/',)]
+print(min([d for d in dir.values() if d + free >= 30_000_000]))
