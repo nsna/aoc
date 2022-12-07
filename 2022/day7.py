@@ -1,31 +1,28 @@
 from utils import day
 from collections import defaultdict
-from copy import deepcopy
 
 RAW = day(7)
-
 commands = RAW.splitlines()
-
 dir = defaultdict(int)
-root = []
+cwd = []
 
 for cmd in commands:
     match cmd.split():
         case ['$', 'cd', '..']:
-            root.pop()
+            cwd.pop()
         case ['$', 'cd', p]:
-            root.append(p)
+            cwd.append(p)
         case ['$', 'ls']:
             pass
-        case ['dir', p]:
+        case ['dir', _]:
             pass
         case [s, f]:
-            dir[tuple(root)] += int(s)
+            dir[tuple(cwd)] += int(s)
             # add file size to each parent
-            path = deepcopy(root[:-1])
-            while path:
-                dir[tuple(path)] += int(s)
-                path.pop()
+            parents = cwd[:-1]
+            while parents:
+                dir[tuple(parents)] += int(s)
+                parents.pop()
 
 # part1
 print(sum([d for d in dir.values() if d <= 100_000]))
