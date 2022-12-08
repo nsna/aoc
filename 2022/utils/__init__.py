@@ -72,9 +72,21 @@ def ints(raw: str) -> map:
     return map(int, re.findall(r'(-?\d+)', raw))
     
 def pos_ints(raw: str) -> map:
+    """
+    Extract only positives integers from a string
+    """
     import re
     
     return map(int, re.findall(r'(\d+)', raw))
+
+def int_grid(raw: str, separator="") -> list:
+    """
+    Return int converted elements of a grid
+    """
+    return [
+        [int(i) for i in (line.split(separator) if separator else line) if i]
+        for line in raw.splitlines()
+    ]
 
 def frequency(iterable) -> dict:
     from collections import defaultdict
