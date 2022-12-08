@@ -1,72 +1,53 @@
 from utils import day
-from itertools import takewhile
-from more_itertools import ilen
+from math import prod
+
 RAW = day(8)
-
-# RAW = """30373
-# 25512
-# 65332
-# 33549
-# 35390"""
-
 grid = RAW.splitlines()
 
-internal = [col[1:-1] for col in grid[1:-1]]
-
-def is_gt(seq):
-    s = list(seq)
-    return all(s[0] > j for j in s[1:])
-
-def n_vis(seq):
+def clear_view(seq) -> bool:
+    """
+    Returns True if the first tree is higher than the rest of the trees
+    in the sequence
+    """
     s = iter(seq)
     a = next(s)
-    return ilen(takewhile(lambda x: x < a, s)) + 1
-    
-def n(seq):
-    s = list(seq)
-    a = s.pop(0)
+    return all(a > b for b in s)
+
+def trees_seen(seq) -> int:
+    """
+    Returns number of trees shorter than first tree
+    If a tree is higher/equal, return early (but still counts as seen)
+    """
+    s = iter(seq)
+    a = next(s)
     n = 0
     for b in s:
         if a > b:
             n += 1
         else:
-            n += 1
-            break
-    return max(1, n)
+            return n + 1
+    return n
+    
+def los(x, y) -> tuple:
+    """
+    Return lines of sight to grid edges from (x, y) in 4 directions
+    Some sequences are reversed so the order is always origin -> edge
+    """
+    up    = [row[x] for row in grid[:y+1]][::-1] # reverse
+    down  = [row[x] for row in grid[y:]]
+    left  = grid[y][:x+1][::-1] # reverse
+    right = grid[y][x:]
+    return (up, down, left, right)
 
-# outer edge
-visible = (len(grid) * 2) - 2 + (len(grid[0]) * 2) - 2
+# start part1 with the grid edge length
+part1 = (len(grid) - 1) * 4
+part2 = 0
 
 # iterate over internal range
 for y in range(1, len(grid) - 1):
     for x in range(1, len(grid[0]) - 1):
-        # check up down left right
-        up    = [row[x] for row in grid[:y+1]]
-        down  = [row[x] for row in grid[y:]]
-        left  = grid[y][:x+1]
-        right = grid[y][x:]
-        
-        v = any((
-            is_gt(reversed(up)),
-            is_gt(down),
-            is_gt(reversed(left)),
-            is_gt(right)
-        ))
-        visible += v
-
-print(visible)
-
-# part 2
-best_scenery = 0
-for y in range(1, len(grid) - 1):
-    for x in range(1, len(grid[0]) - 1):
-        # march up
-        up    = [row[x] for row in grid[:y+1]]
-        down  = [row[x] for row in grid[y:]]
-        left  = grid[y][:x+1]
-        right = grid[y][x:]
-        
-        best_scenery = max(best_scenery,n(reversed(up))* n(down)* n(reversed(left))* n(right))
-        
-print(best_scenery)
-        
+        part1 += any(map(clear_view, los(x, y)))
+        part2  = max(part2, prod(map(trees_seen, los(x, y))))
+         
+print(part1)
+print(part2)
