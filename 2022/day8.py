@@ -33,9 +33,9 @@ def los(x, y) -> tuple:
     Return lines of sight to grid edges from (x, y) in 4 directions
     Some sequences are reversed so the order is always origin -> edge
     """
-    up    = [row[x] for row in grid[:y+1]][::-1] # reverse
+    up    = [row[x] for row in grid[y::-1]]
     down  = [row[x] for row in grid[y:]]
-    left  = grid[y][:x+1][::-1] # reverse
+    left  = grid[y][x::-1]
     right = grid[y][x:]
     return (up, down, left, right)
 
