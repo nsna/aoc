@@ -23,12 +23,11 @@ part2 = deepcopy(part1)
 # part 1 & part 2
 for move in moves:
     n, a, b = ints(move)
-    part2_temp = deque([])
+    temp = deque([])
     for _ in range(n):
         part1[b].append(part1[a].pop())
-        part2_temp.append(part2[a].pop())
-    part2_temp.reverse()
-    part2[b].extend(part2_temp)
+        temp.appendleft(part2[a].pop())
+    part2[b].extend(temp)
     
 print(''.join([part1[val][-1] for val in part1]))
 print(''.join([part2[val][-1] for val in part2]))
