@@ -13,7 +13,8 @@ class Knot:
         self.pos += delta
         if self.tail:
             d = self.pos - self.tail.pos
-            if np.any((d > 1)|(d < -1)):
+            # inf matrix norm = max(sum(abs(x), axis=1))
+            if np.linalg.norm(d, np.inf) > 1:
                 self.tail.move(np.clip(d, -1, 1))
         else:
             self.visited.add(tuple(self.pos))
