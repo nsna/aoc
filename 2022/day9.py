@@ -1,45 +1,44 @@
-from utils import day, pretty_grid
+from utils import day
 import numpy as np
-from functools import partial
-from rich import print
 
 RAW = day(9)
 
-# RAW = """R 4
-# U 4
-# L 3
-# D 1
-# R 4
-# D 1
-# L 5
-# R 2"""
+class Knot:
+    def __init__(self, tail=None):
+        self.tail = tail
+        self.pos = np.array([0, 0])
+        self.visited = {(0,0)}
+        
+    def move(self, delta):
+        self.pos += delta
+        if self.tail:
+            d = self.pos - self.tail.pos
+            if np.any((d > 1)|(d < -1)):
+                self.tail.move(np.clip(d, -1, 1))
+        else:
+            self.visited.add(tuple(self.pos))
 
-deltas = dict(
-    U = np.array(( 0,  1)),
-    D = np.array(( 0, -1)),
-    L = np.array((-1,  0)),
-    R = np.array(( 1,  0))
-)
+def parse():
+    deltas = dict(U = (0,  1), D = (0, -1), L = (-1,  0), R = (1,  0))
+    for cmd in RAW.splitlines():
+        dir, dis = cmd.split()
+        yield deltas[dir], int(dis)
 
-H = np.array([0, 0])
-T = np.array([0, 0])
+def march(knots: list) -> int:
+    commands = RAW.splitlines()
+    H = knots[-1]
+    T = knots[ 0]
+    for dir, dis in parse():
+        for _ in range(dis):
+            H.move(dir)
+    return len(T.visited)
 
-commands = RAW.splitlines()
-visited = set([(0,0)])
+def make_rope(n: int):
+    knots = []
+    for i in range(n):
+        tail = knots[-1] if knots else None
+        knots.append(Knot(tail))
+    return knots
 
-for cmd in commands:
-    dir, dis = cmd.split()
-    dis = int(dis)
-    for _ in range(dis):
-        # move head
-        H += deltas[dir]
-        # move tail
-        # check distance, not touching if x or y > 1
-        d = (H - T)
-        if np.any((d > 1)|(d < -1)):
-            T += np.clip(d, -1, 1)
-            visited.add(tuple(T))
-        # pretty_grid([H,T])
-
-print(len(visited))
-# pretty_grid(visited)
+print(march(make_rope(2)))
+print(march(make_rope(10)))
