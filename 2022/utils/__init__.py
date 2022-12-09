@@ -62,7 +62,26 @@ def day(day: str | int) -> str:
     RAW = res.text.rstrip()
     INPUTS_FILE.write_text(RAW)
     return RAW
+
+def pretty_grid(markers, size=(6,6)):
+    """
+    Pretty grid for visual debugging
+    """
+    from rich import print
     
+    fill = '.'
+    grid = np.full(size, fill)
+    for m in markers:
+        grid[size[1] - (m[1] + 1), m[0]] = '#'
+    for row in grid:
+        for col in row:
+            if col == fill:
+                print(f"[#282a36]{col}[/#282a36]", end=None)
+            else:
+                print(f"[#d8125a]{col}[/#d8125a]", end=None)
+        print()
+    print()
+
 def ints(raw: str) -> map:
     """
     Extract integers from a string.
@@ -102,7 +121,7 @@ def directions(raw: str) -> list:
     """
     import re
     
-    pattern = re.compile('((\w)(\d+))')
+    pattern = re.compile('((\w)\s?(\d+))')
     values = map(pattern.findall, raw)
     return [(value[1], int(value[2])) for value in values]
   
