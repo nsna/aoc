@@ -5,7 +5,7 @@ import networkx as nx
 RAW = day(12)
 
 def neighbours(y, x, height, width):
-    # neighbours of x, y with boundary check
+    # neighbours of y, x with boundary check
     deltas = ((1, 0), (0, 1), (-1, 0), (0, -1))
     for dy, dx in deltas:
         if 0 <= y + dy < height and 0 <= x + dx < width:
@@ -15,12 +15,14 @@ def parse():
     grid = np.array(
         [[ord(c) for c in line] for line in RAW.split()]
     )
+    
     # since the conditions say that only an increase of 1 is valid
-    # set the origin and destination to 'a' (can fall without issue)
+    # set the start and end nodes to 'a' and 'z' so they are reachable
     origin = tuple(np.argwhere(grid == ord('S'))[0])
     grid[origin] = ord('a')
     destination = tuple(np.argwhere(grid == ord('E'))[0])
     grid[destination] = ord('z')
+    
     # part2 - find all lowest elevation points
     lowest = map(tuple, np.argwhere(grid == ord('a')))
     
