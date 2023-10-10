@@ -11,7 +11,7 @@ packets = [
 ]
 
 def cmp(a, b):
-    # returning a positive result indicates a pair is in correct order
+    # returning a negative result indicates a pair is in correct order
     match a, b:
         case int(), int():
             return a - b
