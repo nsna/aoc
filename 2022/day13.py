@@ -30,10 +30,10 @@ def cmp(a, b):
     # If default is given, it is returned if the iterator is exhausted, otherwise StopIteration is raised.
     return next(it, len(a) - len(b))
 
-def day1():
+def part1():
     return sum(i for i, (a, b) in enumerate(packets, start=1) if cmp(a, b) < 0)
 
-def day2():
+def part2():
     flat_packets = chain.from_iterable(packets)
     flat_packets = chain([[[2]], [[6]]], flat_packets)
     sorted_packets = sorted(flat_packets, key=cmp_to_key(cmp))
@@ -43,5 +43,5 @@ def day2():
         func=mul
     ))
 
-print(day1())
-print(day2())
+print(part1())
+print(part2())

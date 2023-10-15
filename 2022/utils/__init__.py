@@ -1,4 +1,3 @@
-import requests
 import os
 import time
 from pathlib import Path
@@ -31,6 +30,8 @@ def day(day: str | int) -> str:
     Retrieve an input for advent of code day
     Year is a constant
     """
+    import requests
+
     token = _read_token()
     if token is None:
         raise ValueError("token not found")
