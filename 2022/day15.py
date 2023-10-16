@@ -1,16 +1,9 @@
 from utils import ints, manhattan_distance, day
 
 RAW = day(15)
-
-NOT_FOUND = 0
-
-class BeaconDict(dict):
-    def __missing__(self, key):
-        return NOT_FOUND
     
 def parse():
-    sensors = {}
-    beacons = BeaconDict()
+    sensors = beacons = {}
     for sensor in RAW.splitlines():
         x1, y1, x2, y2 = ints(sensor)
         # map sensor: distance_to_beacon
