@@ -1,23 +1,18 @@
 import os
 from pathlib import Path
 
-YEAR = 2023
-HERE = Path(__file__).parent
-
-def day(day: str | int) -> str:
+def day(day: str | int, year: int= 2023) -> str:
     """
     Retrieve an input for advent of code day
-
-    Year is a constant
     """
     import requests
 
-    TOKEN_FILE = HERE / ".token"
-    if not TOKEN_FILE.exists():
+    token_file = Path("./.token")
+    if not token_file.exists():
         raise ValueError("session token not found")
-    token = {"session": TOKEN_FILE.read_text().strip()}
+    token = {"session": token_file.read_text().strip()}
 
-    url = f"https://adventofcode.com/{YEAR}/day/{day}/input"
+    url = f"https://adventofcode.com/{year}/day/{day}/input"
     
     # https://www.reddit.com/r/adventofcode/comments/z9dhtd/please_include_your_contact_info_in_the_useragent/
     discord = os.getenv('DISCORD')
@@ -28,24 +23,25 @@ def day(day: str | int) -> str:
         'User-Agent': f"https://github.com/nsna/aoc | discord:{discord}"
     }
     
-    INPUTS_FOLDER = HERE / "inputs"
-    if not INPUTS_FOLDER.exists():
-        INPUTS_FOLDER.mkdir()
+    inputs_folder = Path("./inputs")
+    if not inputs_folder.exists():
+        inputs_folder.mkdir()
 
-    INPUTS_FILE = INPUTS_FOLDER / f"{day}.txt"
-    if INPUTS_FILE.is_file():
-        return INPUTS_FILE.read_text()
+    input_file = inputs_folder / f"{day}.txt"
+    if input_file.is_file():
+        return input_file.read_text()
    
     # request input
     res = requests.get(url, cookies=token, headers=headers)
 
     if not res.ok:
+        print(res.content)
         raise ValueError("request failed")
         
     # cache input + remove any trailing newlines
-    RAW = res.text.rstrip()
-    INPUTS_FILE.write_text(RAW)
-    return RAW
+    raw_input = res.text.rstrip()
+    input_file.write_text(raw_input)
+    return raw_input
 
 def ints(raw: str) -> map:
     """
