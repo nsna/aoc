@@ -1,12 +1,13 @@
 import os
+import re
 from pathlib import Path
+
+import requests
 
 def day(day: str | int, year: int= 2023) -> str:
     """
     Retrieve an input for advent of code day
     """
-    import requests
-
     token_file = Path("./.token")
     if not token_file.exists():
         raise ValueError("session token not found")
@@ -47,14 +48,10 @@ def ints(raw: str) -> map:
     """
     Extract integers from a string.
     """
-    import re
-
     return map(int, re.findall(r'(-?\d+)', raw))
     
 def pos_ints(raw: str) -> map:
     """
     Extract only positives integers from a string
     """
-    import re
-    
     return map(int, re.findall(r'(\d+)', raw))
