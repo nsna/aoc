@@ -16,7 +16,7 @@ def part1():
     print(sum((2**(n - 1)) for n in wins.values() if n > 0))
 
 def part2():
-    sum_cards = dict(list(enumerate([1] * len(wins), start = 1)))
+    sum_cards = dict(enumerate([1] * len(wins), start = 1))
     for current_card, new_cards in wins.items():
         for next_card in range(current_card + 1, current_card + new_cards + 1):
             sum_cards[next_card] += sum_cards[current_card]
