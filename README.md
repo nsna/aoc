@@ -1,1 +1,1 @@
-Advent of Code attempts/solutions as submitted
+Advent of Code attempts/solutions
