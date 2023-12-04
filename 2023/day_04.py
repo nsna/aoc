@@ -1,35 +1,28 @@
 from utils import day
 import re
-from functools import lru_cache
-from collections import Counter, deque
+import time
 LINES = day(4).splitlines()
 
-@lru_cache
-def calculate_card(n):
-    winning, hand = LINES[n - 1].split('|')
-    winning_nums = set(re.findall(r'(\d+)', winning.split(':')[1]))
-    hand_nums = set(re.findall(r'(\d+)', hand))
-    return len(winning_nums & hand_nums)
+start_time = time.time()
+
+def parse_cards():
+    wins = {}
+    for i, line in enumerate(LINES, start = 1):
+        numbers = re.findall(r'(\d+)', line)
+        wins[i] = len(set(numbers[1:11]) & set(numbers[11:]))
+    return wins
 
 def part1():
-    sum = 0
-    for n in range(len(LINES) + 1):
-        wins = calculate_card(n)
-        if wins:
-            sum += 2**(wins - 1)
-    print(sum)
+    print(sum((2**(n - 1)) for n in wins.values() if n > 0))
 
 def part2():
-    cards = Counter()
-    queue = deque(range(1, len(LINES) + 1))
-    while queue:
-        card = queue.popleft()
-        cards[card] += 1
-        new_cards = calculate_card(card)
-        if new_cards:
-            queue.extend(range(card + 1, card + new_cards + 1))
+    sum_cards = dict(list(enumerate([1] * len(wins), start = 1)))
+    for current_card, new_cards in wins.items():
+        for next_card in range(current_card + 1, current_card + new_cards + 1):
+            sum_cards[next_card] += sum_cards[current_card]
+    print(sum(sum_cards.values()))
 
-    print(sum(cards.values()))
-
+wins = parse_cards()
 part1()
 part2()
+print ('[Finished in {:.2f}ms]'.format(1000*(time.time() - start_time)))
