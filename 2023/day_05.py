@@ -2,8 +2,11 @@ from utils import day
 import re
 from itertools import batched
 import math
+import time
 
 LINES = day(5)
+
+start_time = time.time()
 
 def parse():
     sections = LINES.split('\n\n')
@@ -48,3 +51,5 @@ seeds, maps = parse()
 part1()
 #part2()
 part2_hack()
+
+print ('[Finished in {:.2f}ms]'.format(1000*(time.time() - start_time)))
