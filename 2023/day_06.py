@@ -13,6 +13,12 @@ p2_dist = int(''.join(records))
 races = zip(map(int, times), map(int, records))
 
 def roots(b, c, a=1):
+    """
+    d = x * (t - x)
+    d = xt - x^2
+    x^2 - xt + d = 0
+    ∴ b = time, c = distance
+    """
     root_a = (-b + sqrt(b**2 - 4*a*c)) / 2
     root_b = (-b - sqrt(b**2 - 4*a*c)) / 2
     return abs(int(root_a) - int(root_b))
