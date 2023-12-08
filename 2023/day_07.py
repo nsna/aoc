@@ -1,84 +1,35 @@
 import time
-from collections import Counter
-from functools import cmp_to_key
 from utils import day
 
 start_time = time.time()
 LINES = day(7).splitlines()
 
-def parse():
+def score_hand(hand):
+    # map the number of times a character appears
+    # sorting in reverse order makes the higher ranked hands position last
+    return sorted(map(hand.count, hand), reverse=True)
+
+def parse(face):
     for line in LINES:
         hand, bid = line.split()
-        yield hand, int(bid)
+        # translating the face cards into ABCDE allows
+        # python sort to work on the character ordinals
+        # which means automatic high card sorting
+        hand = hand.translate(str.maketrans('TJQKA', face))
+        #print(max(score_hand(hand)), score_hand(hand), hand)
+        # part 2 find the highest score possible when substituting J (0)
+        # part 1 will be unaffected since 0 will not exist in the hand
+        best = max(score_hand(hand.replace('0', card)) for card in hand)
+        yield best, hand, int(bid)
 
-def shape_values(shape):
-    if shape == Counter({5: 1}):
-        return 10
-    elif shape == Counter({4: 1, 1: 1}):
-        return 9
-    elif shape == Counter({3: 1, 2: 1}):
-        return 8
-    elif shape == Counter({3: 1, 1: 2}):
-        return 7
-    elif shape == Counter({2: 2, 1: 1}):
-        return 6
-    elif shape == Counter({2: 1, 1: 3}):
-        return 5
-    else:
-        return 4
+def part1():
+    print(sum(rank * bid for rank, (_, _, bid) in enumerate(sorted(parse('ABCDE')), start=1)))
 
-def optimise_shape(counter: Counter):
-    if counter == {'J': 5}:
-        return Counter(counter.values())
-    common = counter.most_common()
-    candidate, _ = common.pop(0)
-    if candidate == 'J':
-        candidate, _ = common.pop(0)
-    counter[candidate] += counter['J']
-    del counter['J']
-    return Counter(counter.values())
+def part2():
+    # J matches up with B but we want it scoring the lowest this time
+    # so replace B with a char lower than '1' -> '0'
+    print(sum(rank * bid for rank, (_, _, bid) in enumerate(sorted(parse('A0CDE')), start=1)))
 
-def cmp(a, b):
-    count_a, count_b = Counter(a), Counter(b)
-    shape_a, shape_b = Counter(count_a.values()), Counter(count_b.values())
-    
-    if MODE == 1:
-        cards = P1_CARDS
-    else:
-        cards = P2_CARDS
-        if 'J' in a:
-            shape_a = optimise_shape(count_a)
-        if 'J' in b:
-            shape_b = optimise_shape(count_b)
-        
-    if shape_a == shape_b:
-        for left, right in zip(a, b):
-            if left == right:
-                continue
-            else:
-                if cards.index(left) > cards.index(right):
-                    return -1
-                else:
-                    return 1
-    else:
-        if shape_values(shape_a) < shape_values(shape_b):
-            return -1
-        else:
-            return 1
-    
-game = dict(parse())
-hands = list(game.keys())
-
-def sort_and_sum():
-    sorted_game = sorted(hands, key=cmp_to_key(cmp))
-    print(sum([i * game[hand] for i, hand in enumerate(sorted_game, start = 1)]))
-
-P1_CARDS = 'AKQJT98765432'
-P2_CARDS = 'AKQT98765432J'
-MODE = 1
-CARDS = P1_CARDS
-sort_and_sum()
-MODE = 2
-CARDS = P2_CARDS
-sort_and_sum()
+part1()
+part2()
 print('[Finished in {:.2f}ms]'.format(1000*(time.time() - start_time)))
