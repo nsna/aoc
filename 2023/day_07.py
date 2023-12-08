@@ -16,7 +16,6 @@ def parse(face):
         # python sort to work on the character ordinals
         # which means automatic high card sorting
         hand = hand.translate(str.maketrans('TJQKA', face))
-        #print(max(score_hand(hand)), score_hand(hand), hand)
         # part 2 find the highest score possible when substituting J (0)
         # part 1 will be unaffected since 0 will not exist in the hand
         best = max(score_hand(hand.replace('0', card)) for card in hand)
