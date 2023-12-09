@@ -7,7 +7,7 @@ import time
 start_time = time.time()
 LINES = day(8).splitlines()
 
-def get_cycle():
+def instructions():
     return cycle(map(int, list(LINES[0].translate(str.maketrans('LR', '01')))))
 
 def get_nodes():
@@ -18,22 +18,20 @@ def get_nodes():
     return nodes
 
 def traverse(start, end):
-    c = get_cycle()
-    d = next(c)
-    steps = 0
     node = start
-    while not end(node):
-        node = nodes[node][d]
-        d = next(c)
-        steps += 1
-    return steps
+    for steps, direction in enumerate(instructions()):
+        node = nodes[node][direction]
+        if end(node):
+            return steps + 1
 
 def part1():
-    print(traverse('AAA', lambda x: x == 'ZZZ'))
+    print(traverse('AAA', lambda node: node == 'ZZZ'))
 
 def part2():
-    start_nodes = [node for node in nodes if node[-1] == 'A']
-    steps_per_node = [traverse(node, lambda x: x[-1] == 'Z') for node in start_nodes]
+    steps_per_node = (
+        traverse(node, lambda node: node[-1] == 'Z') for node in nodes
+        if node[-1] == ('A')
+    )
     print(lcm(*steps_per_node))
 
 nodes = get_nodes()
