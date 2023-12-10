@@ -8,10 +8,9 @@ def parse():
 
 def extrapolate(sequence):
     ends = [sequence[-1]]
-    next = sequence
-    while not all(e == 0 for e in next):
-        next = [b - a for a, b in pairwise(next)]
-        ends.append(next[-1])
+    while not all(e == 0 for e in sequence):
+        sequence = [b - a for a, b in pairwise(sequence)]
+        ends.append(sequence[-1])
     return sum(ends)
 
 def part1():

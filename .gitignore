@@ -5,6 +5,8 @@ __pycache__/
 .envrc
 shitposts/
 inputs/
+inputs.yaml
 *.png
 *.gz
 .tool-versions
+*.coco
