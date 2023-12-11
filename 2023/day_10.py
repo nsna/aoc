@@ -1,7 +1,8 @@
 from utils import day
 from operator import add
-from shapely.geometry import Polygon, Point
+import time
 
+start_time = time.time()
 GRID = day(10).splitlines()
 
 N = (-1, 0)
@@ -34,14 +35,18 @@ def part1():
     print(len(loop) / 2)
 
 def part2():
-    points = []
-    poly = Polygon(loop)
-    for y in range(len(GRID)):
-        for x in range(len(GRID[y])):
-            if poly.contains(Point(y, x)):
-                points.append((y, x))
-    print(len(points))
+    # shoelace theorem
+    a = 0
+    b = 0
+    for i in range(len(loop)):
+        a += loop[i][1] * loop[(i + 1) % len(loop)][0]
+        b += loop[i][0] * loop[(i + 1) % len(loop)][1]
+    total_area = abs(a - b) / 2
+    # approximation
+    intersecting_with_edges = (len(loop) / 2) - 1
+    print(total_area - intersecting_with_edges)
 
 loop = parse()
 part1()
 part2()
+print('[Finished in {:.2f}ms]'.format(1000*(time.time() - start_time)))

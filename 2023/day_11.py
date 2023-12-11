@@ -1,5 +1,8 @@
 from utils import day
 from itertools import combinations
+import time
+
+start_time = time.time()
 
 SPACE = day(11).splitlines()
 
@@ -35,3 +38,4 @@ def part2():
 
 part1()
 part2()
+print('[Finished in {:.2f}ms]'.format(1000*(time.time() - start_time)))
