@@ -1,7 +1,6 @@
 import os
-import re
 from pathlib import Path
-
+import time
 import requests
 
 def day(day: str | int, year: int= 2023) -> str:
@@ -44,14 +43,10 @@ def day(day: str | int, year: int= 2023) -> str:
     input_file.write_text(raw_input)
     return raw_input
 
-def ints(raw: str) -> map:
-    """
-    Extract integers from a string.
-    """
-    return map(int, re.findall(r'(-?\d+)', raw))
+def measure_time(func):
+    def wrapper():
+        start_time = time.time()
+        func()
+        print('[Finished in {:.2f}ms]'.format(1000*(time.time() - start_time)))
+    return wrapper
     
-def pos_ints(raw: str) -> map:
-    """
-    Extract only positives integers from a string
-    """
-    return map(int, re.findall(r'(\d+)', raw))
