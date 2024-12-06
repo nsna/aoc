@@ -3,7 +3,7 @@ from utils import day
 
 RAW = day(3)
 
-def find_mults(s) -> list[(int, int)]:
+def find_mults(s) -> list[tuple[int, int]]:
     return [(int(a), int(b)) for (a, b) in re.findall(r'mul\((\d+),(\d+)\)', s)]
 
 def p1():
