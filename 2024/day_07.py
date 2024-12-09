@@ -12,7 +12,7 @@ RAW = """190: 10 19
 192: 17 8 14
 21037: 9 7 18 13
 292: 11 6 16 20"""
-RAW = day(7)
+#RAW = day(7)
 
 EQNS = [[int(n) for n in re.findall(r'\d+', line)] for line in RAW.splitlines()]
 OPS = ['+', '*']
@@ -20,7 +20,6 @@ OPS_2 = ['+', '*', '||']
 
 def parenthesise(vars: list) -> str:
     pair, remaining = vars[:3], vars[3:]
-    #print('parenthesise', pair, remaining)
     if pair[1] == '||':
         pair = [str(eval(pair[0])) + pair[2]]
     if remaining == []:
@@ -35,6 +34,9 @@ def intersperse(vars: list, ops: list):
             )
             if el is not None
         )
+
+def is_valid(target, vars, operators):
+    return any(target == eval(parenthesise(option)) for option in intersperse(vars, operators))
 
 def p1():
     s = 0
