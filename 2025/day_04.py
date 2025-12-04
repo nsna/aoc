@@ -42,5 +42,5 @@ while True:
     if changes == 0:
         break
     if iterations == 1:
-        print(total_rolls)
-print(total_rolls)
+        print(p1 := total_rolls)
+print(p2 := total_rolls)
