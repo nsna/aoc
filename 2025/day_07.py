@@ -2,24 +2,7 @@ from collections import defaultdict, deque
 
 from utils import day
 
-RAW = """.......S.......
-...............
-.......^.......
-...............
-......^.^......
-...............
-.....^.^.^.....
-...............
-....^.^...^....
-...............
-...^.^...^.^...
-...............
-..^...^.....^..
-...............
-.^.^.^.^.^...^.
-...............
-"""
-# RAW = day(7)
+RAW = day(7)
 
 
 def parse(inp):
@@ -35,30 +18,27 @@ def parse(inp):
 
 
 def march(origin, splitters):
-    rays = deque([origin])
+    rays = deque([(1,) + origin])
     depth = 0
     max_depth = max(splitters)[0]
-    # visited_splitters = set([])
     visited_splitters = {splitter: 0 for splitter in splitters}
     while depth < max_depth:
         depth += 1
-        new_rays = set([])
+        new_rays = defaultdict(int)
         while rays:
-            y, x = rays.popleft()
+            paths, y, x = rays.popleft()
             yi, xi = (y + 1), x
             if (yi, xi) in splitters:
-                visited_splitters[(yi, xi)] += 1
-                # visited_splitters.add((yi, xi))
-                new_rays.add((yi, x - 1))
-                new_rays.add((yi, x + 1))
+                visited_splitters[(yi, xi)] += paths
+                new_rays[(yi, x - 1)] += paths
+                new_rays[(yi, x + 1)] += paths
             else:
-                new_rays.add((yi, xi))
-        rays = deque(new_rays)
+                new_rays[(yi, xi)] += paths
+        rays = deque([(paths, y, x) for (y, x), paths in new_rays.items()])
     return visited_splitters
 
 
 start, splitters = parse(RAW.splitlines())
 visited = march(start, splitters)
-
 print(sum(val > 0 for val in visited.values()))
-print(sum(val for val in visited.values()))
+print(sum(val for val in visited.values()) + 1)
