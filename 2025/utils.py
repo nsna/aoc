@@ -1,16 +1,14 @@
 import os
-from pathlib import Path
 import time
-import requests
+from pathlib import Path
 
-from dotenv import load_dotenv
+import requests
 
 
 def day(day: str | int, year: int = 2025) -> str:
     """
     Retrieve an input for advent of code day
     """
-    load_dotenv()
     token = os.getenv("TOKEN")
     if token is None:
         raise ValueError("TOKEN env variable not set for session token")
